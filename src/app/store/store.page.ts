@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../models/product';
 import { StoreService } from '../services/store.service';
-import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-store',
@@ -12,9 +11,7 @@ export class StorePage implements OnInit {
   public productos!: Array<Product>;
   public producto!: Product;
 
-  constructor(private _service: StoreService, private _acitveRoute: ActivatedRoute) {
-
-  }
+  constructor(private _service: StoreService) {  }
 
   ngOnInit() {
     this.loadProducts();
