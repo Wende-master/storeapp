@@ -31,5 +31,4 @@ export class StorePage implements OnInit {
         
       })
   }
-
 }
