@@ -15,7 +15,7 @@ export class StorePage implements OnInit {
 
   ngOnInit() {
     this.loadProducts();
-    this.loadById();
+    this.loadOnModal();
   }
 
   loadProducts(): void {
@@ -24,8 +24,7 @@ export class StorePage implements OnInit {
       this.productos = response;
     })
   }
-  loadById(): void {
-    
+  loadOnModal(): void {
       this._service.getProducts().subscribe(response => {
         console.log(response);
         this.producto = response;
