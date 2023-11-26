@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from './models/product';
 import { StoreService } from './services/store.service';
+import { InfiniteScrollCustomEvent, LoadingController } from '@ionic/angular';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -19,20 +20,36 @@ export class AppComponent implements OnInit{
   public productos!: Array<Product>;
 
   
-  constructor(private _service: StoreService) {
+  constructor(private _service: StoreService, private loadingCtrl: LoadingController) {
 
   }
 
   ngOnInit(): void {
-    this.loadProducts();
+    //this.loadProducts();
+    this.loadingData();
+
   }
   
-
-  loadProducts(): void {
-    this._service.getProducts().subscribe(response => {
-      console.log(response);
+  async loadingData(event?: InfiniteScrollCustomEvent) {
+    const loading = await this.loadingCtrl.create({
+      message: "Cargando...",
+      spinner: "bubbles",
+      mode: "ios",
+      duration: 2000
+    }) 
+    loading.present();
+    this._service.getProducts().subscribe(response =>{
+      loading.dismiss();
       this.productos = response;
-    })
+      event?.target.complete();
+    });
   }
+
+  // loadProducts(): void {
+  //   this._service.getProducts().subscribe(response => {
+  //     console.log(response);
+  //     this.productos = response;
+  //   })
+  // }
 
 }

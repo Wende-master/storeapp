@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StoreService } from '../services/store.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Product } from '../models/product';
+import { InfiniteScrollCustomEvent, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-details',
@@ -11,17 +12,23 @@ import { Product } from '../models/product';
 export class DetailsPage implements OnInit {
   public product!: Product;
 
-  constructor(private _service: StoreService, private _acitveRoute: ActivatedRoute) { }
+  constructor(private _service: StoreService, private _acitveRoute: ActivatedRoute, private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
-    this.loadGamesById()
+    //this.loadGamesById();
+    this.loadingDataById();
   }
 
-
-  loadGamesById() {
+  async loadingDataById(event?: InfiniteScrollCustomEvent) {
+    const loading = await this.loadingCtrl.create({
+      message: "Cargando...",
+      spinner: "bubbles",
+      mode: "ios",
+      duration: 2000
+    }) 
+    loading.present();
     this._acitveRoute.params.subscribe((parametros: Params) => {
       var id = parametros['id'];
-     
      
       console.log(id);
       this._service.getProductById(id).subscribe(response => {
@@ -30,6 +37,19 @@ export class DetailsPage implements OnInit {
         this.product = response;
       })
     })
-    
   }
+
+  // loadGamesById() {
+  //   this._acitveRoute.params.subscribe((parametros: Params) => {
+  //     var id = parametros['id'];
+     
+  //     console.log(id);
+  //     this._service.getProductById(id).subscribe(response => {
+  //       console.log(response);
+
+  //       this.product = response;
+  //     })
+  //   })
+    
+  // }
 }
